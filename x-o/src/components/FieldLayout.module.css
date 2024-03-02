@@ -1,6 +1,4 @@
-.List {
-	width: 200px;
-}
+
 
 .Item {
 	border: 1px solid darkgray;
@@ -8,4 +6,8 @@
 	height: 50px;
 	margin-right: 10px;
 	margin-bottom: 10px;
+}
+
+.board_row {
+	display: flex;
 }

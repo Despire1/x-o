@@ -1,11 +1,14 @@
-import { useState } from 'react';
 import { FieldLayout } from './FieldLayout';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { updateSquares, updateX, RESET_SQUARES } from '../actions';
 
-export function Field() {
+export const Field = () => {
     const array = ['', '', '', '', '', '', '', '', ''];
+    const dispatch = useDispatch();
 
-    const [squares, setSquares] = useState(array);
-    const [xIsNext, setXIsNext] = useState(true);
+    const squares = useSelector((state) => state.squares);
+    const xIsNext = useSelector((state) => state.xIsNext);
 
     const handleClick = (i) => {
         const arrayCopy = squares.slice();
@@ -15,8 +18,8 @@ export function Field() {
         }
 
         arrayCopy[i] = xIsNext ? 'X' : 'O';
-        setSquares(arrayCopy);
-        setXIsNext(!xIsNext);
+        dispatch(updateSquares(arrayCopy));
+		dispatch(updateX(!xIsNext))
     };
 
     function calculateWinner(squares) {
@@ -40,14 +43,21 @@ export function Field() {
     }
 
     const resetGame = () => {
-        setSquares(array);
-        setXIsNext(true); // Сбросить игру, чтобы 'X' всегда начинал
+        dispatch(RESET_SQUARES)
+        dispatch(updateX(true)) // Сбросить игру, чтобы 'X' всегда начинал
     };
 
     return (
         <>
             <FieldLayout array={array} handleClick={handleClick} squares={squares} />
-			<button onClick={() => {resetGame()}}>Начать занаво</button>
+            <button
+                onClick={() => {
+                    resetGame();
+                }}
+                type="button"
+            >
+                Начать занаво
+            </button>
         </>
     );
 }
